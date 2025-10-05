@@ -1,39 +1,39 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Map from './components/Map';
 import SubmitForm from './components/SubmitForm';
 import RestroomList from './components/RestroomList';
+import { initialRestrooms } from './data/initialRestrooms';
+import { saveRestrooms, loadRestrooms, clearRestrooms, exportRestrooms } from './utils/restroomStorage';
 import './App.css';
 
 function App() {
-  // Sample data with timestamps
-  const [restrooms, setRestrooms] = useState([
-    {
-      id: 1,
-      name: "Bryant Park Restroom",
-      latitude: 40.7536,
-      longitude: -73.9832,
-      cleanliness: 4,
-      status: "Open",
-      accessible: true,
-      genderNeutral: false,
-      timestamp: new Date('2025-10-01').toISOString()
-    },
-    {
-      id: 2,
-      name: "Madison Square Park Restroom",
-      latitude: 40.7420,
-      longitude: -73.9881,
-      cleanliness: 3,
-      status: "Open",
-      accessible: false,
-      genderNeutral: true,
-      timestamp: new Date('2025-10-02').toISOString()
-    }
-  ]);
+  // Load restrooms from storage or use initial data
+  const [restrooms, setRestrooms] = useState(() => {
+    const saved = loadRestrooms();
+    return saved || initialRestrooms;
+  });
+
+  // Save to storage whenever restrooms change
+  useEffect(() => {
+    saveRestrooms(restrooms);
+  }, [restrooms]);
 
   // Function to add new restroom
   const addRestroom = (newRestroom) => {
     setRestrooms(prev => [...prev, newRestroom]);
+  };
+
+  // Function to reset to initial data
+  const handleReset = () => {
+    if (window.confirm('Are you sure you want to reset all data? This cannot be undone.')) {
+      clearRestrooms();
+      setRestrooms(initialRestrooms);
+    }
+  };
+
+  // Function to export data
+  const handleExport = () => {
+    exportRestrooms(restrooms);
   };
 
   return (
@@ -45,7 +45,17 @@ function App() {
       
       <main>
         <div className="stats">
-          <p>📍 <strong>{restrooms.length}</strong> restrooms reported by the community</p>
+          <div className="stats-content">
+            <p>📍 <strong>{restrooms.length}</strong> restrooms reported by the community</p>
+            <div className="action-buttons">
+              <button onClick={handleExport} className="action-btn export-btn">
+                💾 Export Data
+              </button>
+              <button onClick={handleReset} className="action-btn reset-btn">
+                🔄 Reset Data
+              </button>
+            </div>
+          </div>
         </div>
 
         <Map restrooms={restrooms} />
@@ -54,6 +64,10 @@ function App() {
         
         <SubmitForm onSubmit={addRestroom} />
       </main>
+
+      <footer>
+        <p>Data persists during your session. Export your data to save permanently!</p>
+      </footer>
     </div>
   );
 }
