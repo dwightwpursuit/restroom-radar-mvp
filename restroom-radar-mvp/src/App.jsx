@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import Map from './components/Map';
 import SubmitForm from './components/SubmitForm';
+import RestroomList from './components/RestroomList';
 import './App.css';
 
 function App() {
-  // Sample data - we'll replace this with real submissions later
+  // Sample data with timestamps
   const [restrooms, setRestrooms] = useState([
     {
       id: 1,
@@ -14,7 +15,8 @@ function App() {
       cleanliness: 4,
       status: "Open",
       accessible: true,
-      genderNeutral: false
+      genderNeutral: false,
+      timestamp: new Date('2025-10-01').toISOString()
     },
     {
       id: 2,
@@ -24,7 +26,8 @@ function App() {
       cleanliness: 3,
       status: "Open",
       accessible: false,
-      genderNeutral: true
+      genderNeutral: true,
+      timestamp: new Date('2025-10-02').toISOString()
     }
   ]);
 
@@ -42,10 +45,12 @@ function App() {
       
       <main>
         <div className="stats">
-          <p>📍 <strong>{restrooms.length}</strong> restrooms reported</p>
+          <p>📍 <strong>{restrooms.length}</strong> restrooms reported by the community</p>
         </div>
 
         <Map restrooms={restrooms} />
+        
+        <RestroomList restrooms={restrooms} />
         
         <SubmitForm onSubmit={addRestroom} />
       </main>
