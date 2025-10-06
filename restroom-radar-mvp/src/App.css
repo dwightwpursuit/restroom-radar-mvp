@@ -402,3 +402,46 @@ footer p {
     width: 100%;
   }
 }
+/* Address display in list */
+.address-row {
+  display: block;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.address-row .label {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.address-row .value {
+  display: block;
+  color: #1f2937;
+  font-weight: 500;
+}
+
+/* Directions button in list cards */
+.directions-button-container {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #e5e7eb;
+}
+
+.directions-button {
+  display: inline-block;
+  width: 100%;
+  padding: 8px 16px;
+  background: #2563eb;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  transition: background 0.2s;
+}
+
+.directions-button:hover {
+  background: #1d4ed8;
+}
