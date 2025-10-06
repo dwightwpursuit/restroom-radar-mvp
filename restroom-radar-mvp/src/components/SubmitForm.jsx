@@ -3,6 +3,7 @@ import { useState } from 'react';
 function SubmitForm({ onSubmit }) {
   const [formData, setFormData] = useState({
     name: '',
+    address: '',
     latitude: '',
     longitude: '',
     cleanliness: '3',
@@ -32,6 +33,7 @@ function SubmitForm({ onSubmit }) {
     const newRestroom = {
       id: Date.now(), // Simple ID using timestamp
       name: formData.name,
+      address: formData.address,
       latitude: parseFloat(formData.latitude),
       longitude: parseFloat(formData.longitude),
       cleanliness: parseInt(formData.cleanliness),
@@ -47,6 +49,7 @@ function SubmitForm({ onSubmit }) {
     // Reset form
     setFormData({
       name: '',
+      address: '',
       latitude: '',
       longitude: '',
       cleanliness: '3',
@@ -72,6 +75,18 @@ function SubmitForm({ onSubmit }) {
             onChange={handleChange}
             placeholder="e.g., Bryant Park Public Restroom"
             required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="address">Street Address (optional)</label>
+          <input
+            type="text"
+            id="address"
+            name="address"
+            value={formData.address}
+            onChange={handleChange}
+            placeholder="e.g., 42nd St & Broadway, New York, NY"
           />
         </div>
 

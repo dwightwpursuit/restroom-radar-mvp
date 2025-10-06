@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import Map from './components/Map';
 import SubmitForm from './components/SubmitForm';
 import RestroomList from './components/RestroomList';
+import SearchBar from './components/SearchBar';
 import { initialRestrooms } from './data/initialRestrooms';
 import { saveRestrooms, loadRestrooms, clearRestrooms, exportRestrooms } from './utils/restroomStorage';
 import './App.css';
@@ -13,6 +14,8 @@ function App() {
     return saved || initialRestrooms;
   });
 
+  const [searchLocation, setSearchLocation] = useState(null);
+
   // Save to storage whenever restrooms change
   useEffect(() => {
     saveRestrooms(restrooms);
@@ -21,6 +24,11 @@ function App() {
   // Function to add new restroom
   const addRestroom = (newRestroom) => {
     setRestrooms(prev => [...prev, newRestroom]);
+  };
+
+  // Function to handle location search
+  const handleLocationSearch = (location) => {
+    setSearchLocation([location.latitude, location.longitude]);
   };
 
   // Function to reset to initial data
@@ -58,7 +66,9 @@ function App() {
           </div>
         </div>
 
-        <Map restrooms={restrooms} />
+        <SearchBar onLocationFound={handleLocationSearch} />
+
+        <Map restrooms={restrooms} searchLocation={searchLocation} />
         
         <RestroomList restrooms={restrooms} />
         

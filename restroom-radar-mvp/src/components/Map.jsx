@@ -1,8 +1,8 @@
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import { useEffect } from 'react';
 import 'leaflet/dist/leaflet.css';
 import { Icon } from 'leaflet';
 
-// Fix for default marker icons in React-Leaflet
 import icon from 'leaflet/dist/images/marker-icon.png';
 import iconShadow from 'leaflet/dist/images/marker-shadow.png';
 
@@ -13,14 +13,30 @@ let DefaultIcon = new Icon({
   iconAnchor: [12, 41]
 });
 
-function Map({ restrooms }) {
-  // Default center: NYC (Times Square area)
+// Component to handle map updates
+function MapUpdater({ center, zoom }) {
+  const map = useMap();
+  
+  useEffect(() => {
+    if (center) {
+      map.flyTo(center, zoom || 15, { duration: 1.5 });
+    }
+  }, [center, zoom, map]);
+  
+  return null;
+}
+
+function Map({ restrooms, searchLocation }) {
   const nycCenter = [40.7580, -73.9855];
 
   const getCleanlinessEmoji = (rating) => {
     if (rating >= 4) return '✨';
     if (rating >= 3) return '👍';
     return '⚠️';
+  };
+
+  const getDirectionsUrl = (lat, lng) => {
+    return `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
   };
 
   return (
@@ -35,6 +51,8 @@ function Map({ restrooms }) {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         />
         
+        <MapUpdater center={searchLocation} zoom={15} />
+        
         {restrooms.map((restroom) => (
           <Marker 
             key={restroom.id} 
@@ -46,6 +64,12 @@ function Map({ restrooms }) {
                 <h3 style={{ marginBottom: '10px', fontSize: '16px' }}>
                   {restroom.name}
                 </h3>
+                
+                {restroom.address && (
+                  <div style={{ marginBottom: '8px', fontSize: '13px', color: '#6b7280' }}>
+                    📍 {restroom.address}
+                  </div>
+                )}
                 
                 <div style={{ marginBottom: '8px' }}>
                   <strong>Cleanliness:</strong> {getCleanlinessEmoji(restroom.cleanliness)} {restroom.cleanliness}/5
@@ -71,6 +95,26 @@ function Map({ restrooms }) {
                     {restroom.genderNeutral && <div>🚻 Gender Neutral</div>}
                   </div>
                 )}
+                
+                <div style={{ marginTop: '12px' }}>
+                  <a 
+                    href={getDirectionsUrl(restroom.latitude, restroom.longitude)}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: 'inline-block',
+                      padding: '6px 12px',
+                      background: '#2563eb',
+                      color: 'white',
+                      textDecoration: 'none',
+                      borderRadius: '4px',
+                      fontSize: '13px',
+                      fontWeight: '600'
+                    }}
+                  >
+                    Get Directions
+                  </a>
+                </div>
                 
                 {restroom.timestamp && (
                   <div style={{ 
