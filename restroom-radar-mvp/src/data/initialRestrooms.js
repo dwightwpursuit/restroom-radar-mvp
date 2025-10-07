@@ -9,6 +9,7 @@ export const initialRestrooms = [
     status: "Open",
     accessible: true,
     genderNeutral: false,
+    accessCode: "#2468",
     timestamp: new Date('2025-10-01').toISOString()
   },
   {

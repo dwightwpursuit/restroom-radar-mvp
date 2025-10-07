@@ -9,7 +9,8 @@ function SubmitForm({ onSubmit }) {
     cleanliness: '3',
     status: 'Open',
     accessible: false,
-    genderNeutral: false
+    genderNeutral: false,
+    accessCode: ''
   });
 
   const handleChange = (e) => {
@@ -40,6 +41,7 @@ function SubmitForm({ onSubmit }) {
       status: formData.status,
       accessible: formData.accessible,
       genderNeutral: formData.genderNeutral,
+      accessCode: formData.accessCode,
       timestamp: new Date().toISOString()
     };
 
@@ -55,7 +57,8 @@ function SubmitForm({ onSubmit }) {
       cleanliness: '3',
       status: 'Open',
       accessible: false,
-      genderNeutral: false
+      genderNeutral: false,
+      accessCode: ''
     });
 
     alert('Restroom added successfully! 🎉');
@@ -88,6 +91,21 @@ function SubmitForm({ onSubmit }) {
             onChange={handleChange}
             placeholder="e.g., 42nd St & Broadway, New York, NY"
           />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="accessCode">Access Code (if required)</label>
+          <input
+            type="text"
+            id="accessCode"
+            name="accessCode"
+            value={formData.accessCode}
+            onChange={handleChange}
+            placeholder="e.g., #1234 or Ask staff"
+          />
+          <small style={{ color: '#6b7280', fontSize: '13px' }}>
+            Leave blank if no code is needed
+          </small>
         </div>
 
         <div className="form-row">

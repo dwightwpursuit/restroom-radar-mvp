@@ -45,6 +45,13 @@ function RestroomList({ restrooms }) {
                     <span className="value">{restroom.address}</span>
                   </div>
                 )}
+
+                {restroom.accessCode && (
+                  <div className="info-row access-code-row">
+                    <span className="label">🔑 Access Code:</span>
+                    <span className="value access-code">{restroom.accessCode}</span>
+                  </div>
+                )}
                 
                 <div className="info-row">
                   <span className="label">Cleanliness:</span>

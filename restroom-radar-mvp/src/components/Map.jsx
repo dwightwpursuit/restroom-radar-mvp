@@ -70,6 +70,23 @@ function Map({ restrooms, searchLocation }) {
                     📍 {restroom.address}
                   </div>
                 )}
+
+                {restroom.accessCode && (
+                  <div style={{ 
+                    marginBottom: '8px', 
+                    padding: '8px',
+                    background: '#fef3c7',
+                    borderRadius: '4px',
+                    border: '1px solid #fbbf24'
+                  }}>
+                    <strong>🔑 Access Code:</strong> <code style={{ 
+                      background: '#fef3c7',
+                      padding: '2px 6px',
+                      fontWeight: 'bold',
+                      color: '#92400e'
+                    }}>{restroom.accessCode}</code>
+                  </div>
+                )}
                 
                 <div style={{ marginBottom: '8px' }}>
                   <strong>Cleanliness:</strong> {getCleanlinessEmoji(restroom.cleanliness)} {restroom.cleanliness}/5
