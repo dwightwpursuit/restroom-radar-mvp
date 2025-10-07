@@ -8,7 +8,6 @@ import { saveRestrooms, loadRestrooms, clearRestrooms, exportRestrooms } from '.
 import './App.css';
 
 function App() {
-  // Load restrooms from storage or use initial data
   const [restrooms, setRestrooms] = useState(() => {
     const saved = loadRestrooms();
     return saved || initialRestrooms;
@@ -16,22 +15,18 @@ function App() {
 
   const [searchLocation, setSearchLocation] = useState(null);
 
-  // Save to storage whenever restrooms change
   useEffect(() => {
     saveRestrooms(restrooms);
   }, [restrooms]);
 
-  // Function to add new restroom
   const addRestroom = (newRestroom) => {
     setRestrooms(prev => [...prev, newRestroom]);
   };
 
-  // Function to handle location search
   const handleLocationSearch = (location) => {
     setSearchLocation([location.latitude, location.longitude]);
   };
 
-  // Function to reset to initial data
   const handleReset = () => {
     if (window.confirm('Are you sure you want to reset all data? This cannot be undone.')) {
       clearRestrooms();
@@ -39,7 +34,6 @@ function App() {
     }
   };
 
-  // Function to export data
   const handleExport = () => {
     exportRestrooms(restrooms);
   };
@@ -47,8 +41,15 @@ function App() {
   return (
     <div className="App">
       <header>
-        <h1>🚻 NYC Restroom Radar</h1>
-        <p>Find clean, accessible restrooms near you</p>
+        <div className="header-content">
+          <div className="logo-section">
+            <img 
+              src="/flushfinder-logo.png" 
+              alt="FlushFinder NYC - Your Next Stop: Relief" 
+              className="logo-image"
+            />
+          </div>
+        </div>
       </header>
       
       <main>
@@ -76,7 +77,7 @@ function App() {
       </main>
 
       <footer>
-        <p>Data persists during your session. Export your data to save permanently!</p>
+        <p>© 2025 FlushFinder NYC • Data persists during your session • Export to save permanently</p>
       </footer>
     </div>
   );
